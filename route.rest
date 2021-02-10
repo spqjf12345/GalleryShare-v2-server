@@ -1,0 +1,32 @@
+//getting all
+GET http://localhost:3000/users
+
+###
+//getting one
+GET http://localhost:3000/users/6023ff248a3dfd486a846e4d
+
+###
+//create one
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "userId" : "cindy",
+    "userPWD" : "0719"
+    //"groupid": [1,2,3]
+
+}
+
+###
+//updateing one
+PATCH http://localhost:3000/users/6023fc3b5b35c64811faa512
+Content-Type: application/json
+
+{
+    "userId" : "onew",
+    "userPWD" : "1214"
+}
+
+###
+//deleting one 
+DELETE http://localhost:3000/users/6023ff248a3dfd486a846e4d
