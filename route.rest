@@ -1,25 +1,44 @@
+
+//------------------- Users --------------------
 //getting all
 GET http://localhost:3000/users
 
 ###
 //getting one
-GET http://localhost:3000/users/6023ff248a3dfd486a846e4d
+GET http://localhost:3000/users
 
 ###
+GET http://localhost:3000/users/checkValid
+
+###
+GET http://localhost:3000/groups/showGroup
+//show 속한 그룹 id, 그룹 이름, 사용자 id, 사용자 이름
+
+###
+GET http://localhost:3000/folders/showUserName
+
+###
+POST http://localhost:3000/groups
+
 //create one
 POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "userId" : "cindy",
-    "userPWD" : "0719"
-    //"groupid": [1,2,3]
+    "userName": "jilly",
+	"userPWD": "1249",
+	"groupId": [{
+        "groupId": 
 
+    }]
+        
+    
 }
+
 
 ###
 //updateing one
-PATCH http://localhost:3000/users/6023fc3b5b35c64811faa512
+PATCH http://localhost:3000/users
 Content-Type: application/json
 
 {
@@ -29,4 +48,74 @@ Content-Type: application/json
 
 ###
 //deleting one 
-DELETE http://localhost:3000/users/6023ff248a3dfd486a846e4d
+DELETE http://localhost:3000/users/60278c7edcbd4f1950981852
+
+
+####################################################
+//------------------- Groups --------------------
+//getting all
+GET http://localhost:3000/groups
+
+###
+//getting one
+GET http://localhost:3000/groups/6023ff248a3dfd486a846e4d
+
+###
+//create one
+POST http://localhost:3000/groups
+Content-Type: application/json
+
+{
+    "groupName" : "몰입 캠프"
+}
+
+
+###
+//updateing one
+PATCH http://localhost:3000/groups/6023fc3b5b35c64811faa512
+Content-Type: application/json
+
+{
+    "userId" : "onew",
+    "userPWD" : "1214"
+}
+
+###
+//deleting one 
+DELETE http://localhost:3000/groups/60278c7edcbd4f1950981852
+
+#########################################################
+//------------------- Folders --------------------
+//getting all
+GET http://localhost:3000/folders
+
+###
+//getting one
+GET http://localhost:3000/folders/6023ff248a3dfd486a846e4d
+
+###
+//create one
+POST http://localhost:3000/folders
+Content-Type: application/json
+
+{
+    "folderName": "힐링 모임",
+    "location" : "가평"
+    //"imageUrl" : ["whkldflw image url", "whkldflw image url1", "whkldflw image url2"]
+}
+
+
+###
+//updateing one
+PATCH http://localhost:3000/folders/602802f5bdd44f2fbc198e69
+Content-Type: application/json
+
+{
+    "folderName" : "20.10.20",
+    "location" : "제주도",
+    ""
+}
+
+###
+//deleting one 
+DELETE http://localhost:3000/folders/60278c7edcbd4f1950981852

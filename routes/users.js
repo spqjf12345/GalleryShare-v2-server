@@ -1,11 +1,17 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/users')
+var query_users = require('../api/login')
 
-//getting all
+
+
+router.get('/checkValid', query_users.checkValid);
+
+//find all
 router.get('/', async (req, res) => {
     try{
         const users = await User.find()
+		console.log(res.user)
         res.json(users)
     }catch(err){
         res.status(500).json({ message: err.message })    
@@ -20,28 +26,53 @@ router.get('/:id', getUser, (req, res)=> {
 
 //create one
 router.post('/', async (req, res) =>{
+
+	var result           = '';
+	var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	var charactersLength = 5;
+	for ( var i = 0; i < charactersLength; i++ ) {
+	   result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+
+	//var user_id = res.body.userId;
+	//const user_Name = 'SoJeong Jo';
+    //const user_PWD = '1225';
+	// const newUser = await User.create(
+	// 	{ groupId : req.body.groupId },
+	// 	{ userId : await makeRandomId() }, 
+	// 	{ userName: req.body.userName },
+	// 	{ userPWD: req.body.userPWD }
+	// )
+	
 	const user = new User({
-		userId: req.body.userId,
+		groupId: req.body.groupId,
+		userId : result,
+		userName: req.body.userName,
 		userPWD: req.body.userPWD
-		//: req.body.subscribedToChannel
 	  })
+
 	  try {
 		const newUser = await user.save()
 		res.status(201).json(newUser)
 	  } catch (err) {
 		res.status(400).json({ message: err.message })
 	  }
-})
+})  
 
 //updateing one
 router.patch('/:id', getUser, async (req, res) =>{
 	if (req.body.userId != null) {
 		res.user.userId = req.body.userId
 	  }
+	if (req.body.userName != null) {
+		res.user.userName = req.body.userName
+	  }
 	if(req.body.userPWD != null){
 		res.user.userPWD = req.body.userPWD
-	}
-	  
+	}  
+	if(req.body.groupId != null){
+		res.user.groupId = req.body.groupId
+	} 
 	  try {
 		const updatedUser = await res.user.save()
 		res.json(updatedUser)
@@ -60,6 +91,29 @@ router.delete('/:id', getUser, async (req, res) =>{
 	  }
 })
 
+
+// function makeRandomId() {
+// return new Promise(function(resolve, reject) {
+// 	var result           = '';
+// 	var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+// 	var charactersLength = 5;
+// 	for ( var i = 0; i < charactersLength; i++ ) {
+// 	result += characters.charAt(Math.floor(Math.random() * charactersLength));
+// 	}
+// 	resolve(result);
+// });
+// }
+
+// async function makeRandomId(){
+// 	var result           = '';
+// 	var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+// 	var charactersLength = 5;
+// 	for ( var i = 0; i < charactersLength; i++ ) {
+// 	   result += characters.charAt(Math.floor(Math.random() * charactersLength));
+// 	}
+// 	return result;
+// }
+
 async function getUser(req, res, next) {
 	let user
 	try {
@@ -72,6 +126,6 @@ async function getUser(req, res, next) {
 	}
 	res.user = user
 	next()
-}
+ }
 
 module.exports = router
