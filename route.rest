@@ -17,6 +17,19 @@ GET http://localhost:3000/groups/showGroup
 ###
 GET http://localhost:3000/folders/showUserName
 
+
+###
+GET http://localhost:3000/folders/showFolder
+
+###
+GET http://localhost:3000/folders/showFolderImage
+
+###
+POST http://localhost:3000/groups/makeGroup
+
+###
+GET http://localhost:3000/groups/exitGroup
+
 ###
 POST http://localhost:3000/groups
 

@@ -10,8 +10,10 @@ var query_groups = require('../api/groupPage')
 var query_users = require('../api/groupPage')
 
 router.get('/showGroup', query_groups.showGroup);
+router.post('/makeGroup', query_groups.makeGroup);
+router.get('/exitGroup', query_groups.exitGroup);
 
-//router.post('/makeGroup', query_groups.makeGroup);
+
 
 //getting all
 router.get('/', async(req, res) => {
@@ -32,44 +34,19 @@ router.get('/:id', getGroup, (req, res)=> {
 //create one
 //var groupId = 0;
 router.post('/', async (req, res) => {
-	const myName = { userName : 'DaJin Han'};
-    //if input 받은 그룹번호가 null이 아니라면 그리고 그룹 만들기 버튼 누르면
-    var group_Name = "힐링 모임";
-
-	var userid = '';
-	const query = users_query.find(myName).select('-_id userId')
-	var result = await query.exec((err, userid) => {
-		console.log("makeGroup: " , userid[0]['userId']);
-        userid = userid[0]['userId'];
-		console.log(userid);
-	})
-
-	console.log(userid);
-
 	const group = new Group({
-		groupId: "10", 
-		groupName: group_Name,
-		userId: userid // 왜 밖으로 나가면 얘가 죽어버리지 ?? 
-		//빈칸이 저장된다.. 
-		//,folderId: req.body.folderId
+		groupId: req.body.groupId, 
+		groupName: req.body.groupName,
+		userId: req.body.userId, 
+		folderId: req.body.folderId
 	  })
 
-	const newGroup = await group.save()
-	res.status(201).json(newGroup)
-
-	// const group = new Group({
-	// 	groupId: "10", 
-	// 	groupName: group_Name,
-	// 	userId: userid,
-    //     //folderId: req.body.folderId
-	//   })
-
-	//   try {
-	// 	const newGroup = await group.save()
-	// 	res.status(201).json(newGroup)
-	//   } catch (err) {
-	// 	res.status(400).json({ message: err.message })
-	//   }
+	  try {
+		const newGroup = await group.save()
+		res.status(201).json(newGroup)
+	  } catch (err) {
+		res.status(400).json({ message: err.message })
+	  }
 })
 
 //updateing one

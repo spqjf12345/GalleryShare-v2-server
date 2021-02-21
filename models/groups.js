@@ -7,6 +7,7 @@ const groupsSchema = new Schema({
     //_id: Schema.Types.ObjectId,
     groupId: {
         type: String, 
+        unique : true
     },
 
     groupIamge: {
@@ -23,6 +24,9 @@ const groupsSchema = new Schema({
 
     folderId: { // folderSchema의 id 값 array로 가져오기
         type: [String]
+    }, 
+    groupImageUrl: {
+        type: String
     }
     
 })

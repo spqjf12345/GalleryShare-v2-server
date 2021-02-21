@@ -9,6 +9,8 @@ var query_folder = require('../api/folderPage')
 var query_users = require('../api/folderPage')
 
 router.get('/showUserName', query_folder.showUserName);
+router.get('/showFolder', query_folder.showFolder);
+router.get('/showFolderImage', query_folder.showFolderImage);
 
 //getting all
 router.get('/', async(req, res) => {

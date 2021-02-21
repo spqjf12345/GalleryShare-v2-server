@@ -1,5 +1,7 @@
 const users_query = require('../models/users')
 const groups_query = require('../models/groups')
+const Group = require('../models/groups');
+const router = require('../routes/users');
 var groupController = {};
 var results = new Object();
 // const shortid = require('shortid');
@@ -50,37 +52,80 @@ groupController.showGroupImage = function(req, res){
 
 }
 
-// groupController.makeGroup = async function (req, res){
-//     //if 사용자 input 그룹 확인버튼 누르면 
-//     const myName = { userName : 'DaJin Han'};
-//     //if input 받은 그룹번호가 null이 아니라면 그리고 그룹 만들기 버튼 누르면
-//     const group_Name = {groupName: "힐링 모임"};
-//     var userid = '';
-//     //find user id -> 4
-//     users_query.find(myName).select('-_id userId').exec((err, userid) => {
-//         console.log("makeGroup: " , userid[0]['userId']);
-//         userid = userid[0]['userId'];
-//     })
+groupController.makeGroup = function (req, res){
+    //if 사용자 input 그룹 확인버튼 누르면 
+    const myName = { userName : 'DaJin Han'};
+    //if input 받은 그룹번호가 null이 아니라면 그리고 그룹 만들기 버튼 누르면
+    const group_Name = {groupName: "힐링 모임"};
+    var userId = users_query.findOne(myName).select('-_id userId');
+    try{
+    userId.exec(function(err, userid){
+        const group = new Group({
+            groupId: "10",
+            groupName: group_Name['groupName'],
+            userId: userid['userId'],
+            groupImageUrl: "hsklwe"
+        })
+        const newGroup = group.save()
+        res.status(201).json(newGroup)
+        })
+    }catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
 
-//     const group = new group({
-//         groupId: "10",
-//         groupName: group_Name,
-//         userId: userid[0]['userId'], // 추가한 사용자
-//     })
-//     try {
-//         const newGroup = await group.save()
-//         res.status(201).json(newGroup)
-//   } catch (err) {
-//         res.status(400).json({ message: err.message })
-//   }
-// }
+const mongoose = require('mongoose')
+mongoose.set('useFindAndModify', false);
 
 groupController.exitGroup = function(req, res){
     //if 사용자가 롱 클릭 시 그룹 탈퇴 
+    const myName = { userName : 'DaJin Han'};
+    const group_Name = {groupName: "2020_madCamp"};
+    var groupId = groups_query.findOne(group_Name).select('-_id groupId');
+    var userId = users_query.findOne(myName).select('-_id userId');
+    
+    groups_query.findOne(group_Name).select('-_id userId').exec()
+    .then((userid) =>{
+        
+        var userIdCount = userid['userId'].length;
+        if(userIdCount == 1){
+            console.log("1 user")
+             groupId.exec(function(err, groupid){
+                const delete_query = groups_query.remove({'groupId' : groupid[0]['groupId']});
+                delete_query.exec();
+                console.log("delete group ", groupid['groupId'])
+                //console.log(groupid[0]['groupId']);
+            }) 
+        }else{
+            ///userid['userId'].push("AAAAA"); 사용자 추가 with 사용자 id 
+             //group userid 배열에서 user delete 
+            // ["AABBC","ABABC","DAEAE","ABECA"]
+            groupId.exec((err, groupid) =>{
+                console.log("groupId groupId : ", groupid);
+                // groups_query.findOne(group_Name).exec((err, group_user) => {
+                //     console.log("groups : ", group_user);
+                //groups_query.updateOne(group_Name, { $addToSet: {userId : "DDFFD"}}).exec();
+                userId.exec((err, myuserid) => {
+                    console.log(myuserid['userId']);
+                    groups_query.updateOne(group_Name, { $addToSet: {userId : myuserid['userId']}}).exec();
+                    //groups_query.updateOne(group_Name, { $pull: {userId : myuserid['userId']}}).exec();
+                })
+
+            })
+
+            
+        }
+    })
+
+    
 
      
     
-    }
+}
+
+groupController.showStarGroup = function(req, res){
+
+}
 
 module.exports = groupController
 
