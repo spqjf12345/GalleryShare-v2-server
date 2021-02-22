@@ -7,7 +7,6 @@ const bodyParser = require('body-parser')
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
-//app.use(express.json())
 
 //nodejs 의 native promise 사용 
 mongoose.Promise = global.Promise

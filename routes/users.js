@@ -1,11 +1,43 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/users')
-var query_users = require('../api/login')
 
 
+router.get('/checkValid/:user_name', function(req, res){
+	var username = req.params.user_name;
+	User.findOne({userName : username}).countDocuments().exec((err, name) =>{	
+		if(name == 1){
+			console.log("name", name);
+			console.log("false") //다시 입력해주세요
+		}else{
+			console.log("true") // 창 넘기기  유효한 아이디입니다.
+		} 
+	})
+})
 
-router.get('/checkValid', query_users.checkValid);
+router.post('/signUp/:user_name/:user_pwd', async function(req, res){
+	var result           = '';
+	var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	var charactersLength = 5;
+	for ( var i = 0; i < charactersLength; i++ ) {
+	   result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	
+	const user = new User({
+		userId : result,
+		userName: req.params.user_name,
+		userPWD: req.params.user_pwd
+	  })
+
+	  try {
+		const newUser = await user.save()
+		res.status(201).json(newUser)
+	  } catch (err) {
+		res.status(400).json({ message: err.message })
+	  }
+
+})
+
 
 //find all
 router.get('/', async (req, res) => {

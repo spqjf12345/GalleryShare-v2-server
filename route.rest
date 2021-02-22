@@ -8,18 +8,21 @@ GET http://localhost:3000/users
 GET http://localhost:3000/users
 
 ###
-GET http://localhost:3000/users/checkValid
+GET http://localhost:3000/users/checkValid/Ya Gwon
+
+###
+POST http://localhost:3000/users/signUp/Ya Gwon/15931
 
 ###
 GET http://localhost:3000/groups/showGroup
 //show 속한 그룹 id, 그룹 이름, 사용자 id, 사용자 이름
 
-###
-GET http://localhost:3000/folders/showUserName
+### folderid
+GET http://localhost:3000/folders/showUserName/1
 
 
-###
-GET http://localhost:3000/folders/showFolder
+### groupid
+GET http://localhost:3000/folders/showFolder/1
 
 ###
 GET http://localhost:3000/folders/showFolderImage
@@ -29,6 +32,9 @@ POST http://localhost:3000/groups/makeGroup
 
 ###
 GET http://localhost:3000/groups/exitGroup
+
+###
+POST http://localhost:3000/folders/makeFolder/DG1/축구/월드컵 경기장
 
 ###
 POST http://localhost:3000/groups
@@ -131,4 +137,4 @@ Content-Type: application/json
 
 ###
 //deleting one 
-DELETE http://localhost:3000/folders/60278c7edcbd4f1950981852
+DELETE http://localhost:3000/folders/3
